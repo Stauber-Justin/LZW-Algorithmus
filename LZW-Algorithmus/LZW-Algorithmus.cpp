@@ -7,18 +7,26 @@
 int main()
 {
 	std::vector <std::string> dictionary;
+	std::vector <char> zeichenVector;
+
 	std::string input;
 	cout << "Bitte gebe die zu komprimierende Zeichenfolge ein!\n";
 	cin >> input;
 	cout << "Die Eingabe lautet: " << input << "\n";
 	dictionary.push_back(input);
 
-	for (int i = 0; i < dictionary.size(); i++)
+	for (char zeichen : input)
 	{
-		cout << dictionary[i] << "\n";
+		zeichenVector.push_back(zeichen);
 	}
 
-	cout << dictionary[0] << "\n";
+	for (int i = 0; i < zeichenVector.size(); i++)
+	{
+		cout << zeichenVector[i] << "\n";
+	}
+
+
+	cout << "Dic0" << zeichenVector[0] << "\n";
 
 }
 
