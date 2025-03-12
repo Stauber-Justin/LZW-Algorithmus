@@ -6,32 +6,47 @@
 
 int main()
 {
+	std::vector<char> InputHandler();
 	std::vector <std::string> dictionary;
-	std::vector <char> zeichenVector;
+	std::vector <char> charVector;
 
+	char currentChar;
+	std::string lastChar;
+
+	int outputCode;
+
+	charVector = InputHandler();
+
+	for (int i = 0; i < charVector.size(); i++)
+	{
+		cout << charVector[i] << "\n";
+	}
+
+
+	cout << "Dic0: " << charVector[0] << "\n";
+
+}
+
+std::vector<char> InputHandler()
+{
 	std::string input;
+	std::vector<char> inputVector;
+
 	cout << "Bitte gebe die zu komprimierende Zeichenfolge ein!\n";
 	cin >> input;
 	cout << "Die Eingabe lautet: " << input << "\n";
-	dictionary.push_back(input);
 
-	for (char zeichen : input)
+	for (char z : input)
 	{
-		zeichenVector.push_back(zeichen);
+		inputVector.push_back(z);
 	}
 
-	for (int i = 0; i < zeichenVector.size(); i++)
-	{
-		cout << zeichenVector[i] << "\n";
-	}
-
-
-	cout << "Dic0" << zeichenVector[0] << "\n";
-
+	return inputVector;
 }
 
 int LZW_Compress(std::string input)
 {
+
 	return 0;
 }
 
