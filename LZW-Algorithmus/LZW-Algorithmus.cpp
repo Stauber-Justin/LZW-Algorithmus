@@ -1,42 +1,40 @@
 #include <iostream>
 #include <vector>
 
-#define cout std::cout
-#define cin std::cin
+#define vector std::vector
+#define string std::string
 
 int main()
 {
-	std::vector<char> InputHandler();
-	std::vector <std::string> dictionary;
-	std::vector <char> charVector;
+	// Get Input and push it into a vector char by char
+	string inputString;
+	vector<char> InputHandler(string /*input*/);
+	vector <char> charVector;
+	// Compress the input
+	vector <string> dictionary;
 
-	char currentChar;
-	std::string lastChar;
-
-	int outputCode;
-
-	charVector = InputHandler();
-
+	// Get Input
+	std::cout << "Bitte gebe die zu komprimierende Zeichenfolge ein!\n";
+	std::cin >> inputString;
+	// CharVector for compression
+	charVector = InputHandler(inputString);
 	for (int i = 0; i < charVector.size(); i++)
 	{
-		cout << charVector[i] << "\n";
+		std::cout << charVector[i] << "\n";
 	}
 
 
-	cout << "Dic0: " << charVector[0] << "\n";
+	std::cout << "Dic0: " << charVector[0] << "\n";
 
 }
 
-std::vector<char> InputHandler()
+vector<char> InputHandler(string inputString)
 {
-	std::string input;
-	std::vector<char> inputVector;
+	vector<char> inputVector;
 
-	cout << "Bitte gebe die zu komprimierende Zeichenfolge ein!\n";
-	cin >> input;
-	cout << "Die Eingabe lautet: " << input << "\n";
+	std::cout << "Die Eingabe lautet: " << inputString << "\n";
 
-	for (char z : input)
+	for (char z : inputString)
 	{
 		inputVector.push_back(z);
 	}
@@ -44,13 +42,21 @@ std::vector<char> InputHandler()
 	return inputVector;
 }
 
-int LZW_Compress(std::string input)
+int LZW_Compress(vector<char> inputVector)
 {
+	char currentChar;
+	string lastChar;
+
+	int outputCode;
+
+
+
+
 
 	return 0;
 }
 
-int LZW_Decompress(std::string input)
+int LZW_Decompress(string input)
 {
 	return 0;
 }
