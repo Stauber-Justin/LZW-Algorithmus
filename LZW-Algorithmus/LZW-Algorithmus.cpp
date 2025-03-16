@@ -53,32 +53,54 @@ vector<char> InputHandler(string inputString)
 
 vector<int> LZW_Compress(vector<char> inputVector)
 {
-	string currentCharString;
-	string lastCharString;
+    string currentCharString;
+    string lastCharString;
+    vector<string> dictionary;
+    vector<int> outputCode;
 
-	vector<string> dictionary;
-	vector<int> outputCode;
+    // Falls der Eingabe-Vektor leer ist, sofort zurückgeben.
+    if (inputVector.empty())
+        return outputCode;
 
+    // Initialisierung mit dem ersten Zeichen
+    currentCharString = string(1, inputVector[0]);
+    dictionary.push_back(currentCharString);
+    outputCode.push_back(0); // Der erste Eintrag hat Index 0
+    lastCharString = currentCharString;
 
-	// loop every character and compare with dictionary
-	for (int charCount = 0; charCount < inputVector.size(); charCount++)
-	{
-		currentCharString = inputVector[charCount];
-		// empty dictionary we set lastChar=current and push_back the current char.
-		if (dictionary.size() == 0)
-		{
-			dictionary.push_back(currentCharString);
-			lastCharString = inputVector[0];
-		}
+    // Ab dem zweiten Zeichen wird iteriert
+    for (size_t currentChar = 1; currentChar < inputVector.size(); currentChar++)
+    {
+        currentCharString = string(1, inputVector[currentChar]);
 
-		if (dictionary[charCount] == currentCharString && charCount != 0)
-		{
-			outputCode.push_back(charCount);
-			lastCharString = inputVector[charCount - 1];
-		}
-	}
+        // Überprüfen, ob currentCharString bereits im Dictionary enthalten ist.
+        vector<string>::iterator currentCharFindIterator = find(dictionary.begin(), dictionary.end(), currentCharString);
 
-	return outputCode;
+        if (currentCharFindIterator != dictionary.end())
+        {
+            // Gefunden: Index ermitteln und in outputCode speichern.
+            int index = distance(dictionary.begin(), currentCharFindIterator);
+            outputCode.push_back(index);
+        }
+        else
+        {
+            // Nicht gefunden: Füge currentCharString dem Dictionary hinzu.
+            dictionary.push_back(currentCharString);
+
+            // Ausgabe: Hier wird der Index des letzten verarbeiteten Strings genutzt.
+            vector<string>::iterator lastCharFindIterator = find(dictionary.begin(), dictionary.end(), lastCharString);
+            if (lastCharFindIterator != dictionary.end())
+            {
+                int index = distance(dictionary.begin(), lastCharFindIterator);
+                outputCode.push_back(index);
+            }
+        }
+
+        // Aktuellen String als letzten speichern.
+        lastCharString = currentCharString;
+    }
+
+    return outputCode;
 }
 
 int LZW_Decompress(string input)
