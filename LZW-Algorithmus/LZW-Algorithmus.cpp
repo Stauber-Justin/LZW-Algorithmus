@@ -16,7 +16,7 @@ static vector<vector<string>> LZW_Compress(const vector<char>& inputVector)
     // Falls der Eingabe-Vektor leer ist, sofort zurückgeben.
     if (inputVector.empty())
     {
-        std::cerr << "Fehler: inputVector is empty!";
+        std::cerr << "Fehler: LZW_Compress inputVector is empty!";
         return resultVector;
     }
 
@@ -63,43 +63,85 @@ static vector<vector<string>> LZW_Compress(const vector<char>& inputVector)
     return resultVector;
 }
 
+static string LZW_Decompress(const vector<vector<string>>& inputVector) {
+    vector<string> outputDic = inputVector[0];
+    vector<string> outputCode = inputVector[1];
+    vector<string> outputStringVector;
+    string currentCharString;
+    string outputString;
+
+    if (inputVector.empty())
+    {
+        std::cerr << "Fehler: LZW_Decompress inputVector is empty!";
+        return outputString;
+    }
+
+    // Initialisierung mit dem ersten Zeichen
+    currentCharString = outputCode[0];
+    vector<string>::iterator currentCharFindIterator = find(outputDic.begin(), outputDic.end(), currentCharString);
+    if (currentCharFindIterator != outputDic.end()) {
+        outputStringVector.push_back(*currentCharFindIterator);
+    }
+
+    // 
+    for (int currentChar = 1; currentChar < outputCode.size(); currentChar++) {
+        currentCharString = outputCode[currentChar];
+        currentCharFindIterator = find(outputDic.begin(), outputDic.end(), currentCharString);
+        if (currentCharFindIterator != outputDic.end()) {
+            outputStringVector.push_back(*currentCharFindIterator);
+        }
+    }
+
+    // Vektor in einen String umwandeln
+    for (const auto& str : outputStringVector) {
+        outputString += str;
+    }
+
+    return outputString;
+}
+
 int main()
 {
-	// Get Input and push it into a vector char by char
-	string inputString;
-	vector<char> InputHandler(string /*input*/);
+    // Get Input and push it into a vector char by char
+    string inputString;
+    vector<char> InputHandler(string /*input*/);
     /*vector<vector<string>> LZW_Compress(const vector<char>& )*/
-	vector<char> charVector;
+    vector<char> charVector;
 
 
-	// Get Input
-	std::cout << "Bitte gebe die zu komprimierende Zeichenfolge ein!\n";
-	std::cin >> inputString;
-	// CharVector for compression
-	charVector = InputHandler(inputString);
-	for (int i = 0; i < charVector.size(); i++)
-	{
-		std::cout << charVector[i] << "\n";
-	}
+    // Get Input
+    std::cout << "Bitte gebe die zu komprimierende Zeichenfolge ein!\n";
+    std::cin >> inputString;
+    // CharVector for compression
+    charVector = InputHandler(inputString);
+    for (int i = 0; i < charVector.size(); i++)
+    {
+        std::cout << charVector[i] << "\n";
+    }
 
 
-	std::cout << "Dic0: " << charVector[0] << "\n";
-	
-	// Ausgabe des Komprimierungsergebnisses
-	vector<vector<string>> result = LZW_Compress(charVector);
-    vector<string> outputCodeVector = result[1];
-    vector<string> outputDictionary = result[0];
-	for (int i = 0; i < outputCodeVector.size() ; i++)
-	{
-		std::cout << "Output Code: " << outputCodeVector[i] << "\n";
-	}
-    
-    for (int i = 0; i < outputDictionary.size() ; i++)
-	{
-		std::cout << "Output Dic: " << outputDictionary[i] << "\n";
-	}
 
+    // Ausgabe des Komprimierungsergebnisses
+    std::cout << "LZW_Compress:\n";
+    vector<vector<string>> resultCompress = LZW_Compress(charVector);
+    vector<string> outputCodeVector = resultCompress[1];
+    vector<string> outputDictionary = resultCompress[0];
+    for (int i = 0; i < outputCodeVector.size(); i++)
+    {
+        std::cout << "Output Code: " << outputCodeVector[i] << "\n";
+    }
 
+    for (int i = 0; i < outputDictionary.size(); i++)
+    {
+        std::cout << "Output Dic: " << outputDictionary[i] << "\n";
+    }
+    std::cout << "---------------------------------\n";
+
+    // Ausgabe des Dekromprimierungsergebnisses
+    string resultString = LZW_Decompress(resultCompress);
+    std::cout << "LZW_Decompress:\n";
+    std::cout << "Input:  " << inputString << std::endl;
+    std::cout << "Output: " << resultString;
 }
 
 vector<char> InputHandler(string inputString)
@@ -114,10 +156,4 @@ vector<char> InputHandler(string inputString)
 	}
 
 	return inputVector;
-}
-
-
-int LZW_Decompress(string input)
-{
-	return 0;
 }
