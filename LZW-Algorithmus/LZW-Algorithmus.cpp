@@ -13,7 +13,7 @@ static vector<vector<string>> LZW_Compress(const vector<char>& inputVector)
     vector<string> outputCode;
     vector<vector<string>> resultVector;
 
-    // Falls der Eingabe-Vektor leer ist, sofort zurückgeben.
+    // Falls der Eingabe-Vektor leer ist, sofort zurï¿½ckgeben.
     if (inputVector.empty())
     {
         std::cerr << "Fehler: LZW_Compress inputVector is empty!";
@@ -31,7 +31,7 @@ static vector<vector<string>> LZW_Compress(const vector<char>& inputVector)
     {
         currentCharString = string(1, inputVector[currentChar]);
 
-        // Überprüfen, ob currentCharString bereits im Dictionary enthalten ist.
+        // ï¿½berprï¿½fen, ob currentCharString bereits im Dictionary enthalten ist.
         vector<string>::iterator currentCharFindIterator = find(dictionary.begin(), dictionary.end(), currentCharString);
 
         if (currentCharFindIterator != dictionary.end())
@@ -42,7 +42,7 @@ static vector<vector<string>> LZW_Compress(const vector<char>& inputVector)
         }
         else
         {
-            // Nicht gefunden: Füge currentCharString dem Dictionary hinzu.
+            // Nicht gefunden: Fï¿½ge currentCharString dem Dictionary hinzu.
             dictionary.push_back(currentCharString);
 
             // Ausgabe: Hier wird der Index des letzten verarbeiteten Strings genutzt.
@@ -64,31 +64,41 @@ static vector<vector<string>> LZW_Compress(const vector<char>& inputVector)
 }
 
 static string LZW_Decompress(const vector<vector<string>>& inputVector) {
+    if (inputVector.empty())
+    {
+        std::cerr << "Fehler: LZW_Decompress inputVector is empty!";
+        return "";
+    }
+
     vector<string> outputDic = inputVector[0];
     vector<string> outputCode = inputVector[1];
     vector<string> outputStringVector;
     string currentCharString;
     string outputString;
 
-    if (inputVector.empty())
-    {
-        std::cerr << "Fehler: LZW_Decompress inputVector is empty!";
-        return outputString;
-    }
 
     // Initialisierung mit dem ersten Zeichen
     currentCharString = outputCode[0];
-    vector<string>::iterator currentCharFindIterator = find(outputDic.begin(), outputDic.end(), currentCharString);
-    if (currentCharFindIterator != outputDic.end()) {
-        outputStringVector.push_back(*currentCharFindIterator);
+    int index = std::stoi(currentCharString);
+    if (index >= 0 && index < outputDic.size()) {
+        outputStringVector.push_back(outputDic[index]);
+    }
+    else {
+        std::cerr << "Fehler: Index auÃŸerhalb des gÃ¼ltigen Bereichs!" << std::endl;
+        return "";
     }
 
-    // 
+
+    // Ab dem zweiten Zeichen wird iteriert
     for (int currentChar = 1; currentChar < outputCode.size(); currentChar++) {
         currentCharString = outputCode[currentChar];
-        currentCharFindIterator = find(outputDic.begin(), outputDic.end(), currentCharString);
-        if (currentCharFindIterator != outputDic.end()) {
-            outputStringVector.push_back(*currentCharFindIterator);
+        index = std::stoi(currentCharString);
+        if (index >= 0 && index < outputDic.size()) {
+            outputStringVector.push_back(outputDic[index]);
+        }
+        else {
+            std::cerr << "Fehler: Index " << index << " auÃŸerhalb des gÃ¼ltigen Bereichs!" << std::endl;
+            continue;
         }
     }
 
